@@ -1,0 +1,38 @@
+﻿@page "/artist-registration"
+
+<h3>Artist Registration</h3>
+
+<EditForm Model="@artist" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div>
+        <label for="Name">Name:</label>
+        <InputText id="Name" @bind="artist.Name" />
+    </div>
+    <div>
+        <label for="Genre">Genre:</label>
+        <InputText id="Genre" @bind="artist.Genre" />
+    </div>
+    <div>
+        <label for="Email">Email:</label>
+        <InputText id="Email" @bind="artist.Email" />
+    </div>
+    <button type="submit">Register Artist</button>
+</EditForm>
+
+@code {
+    private Artist artist = new();
+
+    private void HandleValidSubmit()
+    {
+        Console.WriteLine($"Artist {artist.Name} registered successfully!");
+    }
+
+    public class Artist
+    {
+        public string Name { get; set; }
+        public string Genre { get; set; }
+        public string Email { get; set; }
+    }
+}

@@ -1,0 +1,38 @@
+# Rider specific
+.idea/
+*.sln.iml
+
+# User-specific files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Bb]in/
+[Oo]bj/
+
+# Rider specific
+.idea/
+.idea_modules/
+.idea_modules.xml
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/dictionaries/
+.idea/libraries/
+.idea/runConfigurations/
+.idea/inspectionProfiles/
+.idea/codeStyles/
+.idea/scopes/
+.idea/vcs.xml
+.idea/jsLibraryMappings.xml
+.idea/gradle.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/encodings.xml
+.idea/markdown_navigator.xml
+.idea/markdown
