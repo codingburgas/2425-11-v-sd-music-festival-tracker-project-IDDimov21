@@ -16,7 +16,7 @@ namespace FestivalApp_PL.Auth
 
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
-            var email = await _jsRuntime.InvokeAsync<string>("localStorage.getItem", "userEmail");
+            var email = await _jsRuntime.InvokeAsync<string>("sessionStorage.getItem", "userEmail");
 
             ClaimsIdentity identity;
             if (!string.IsNullOrEmpty(email))
@@ -34,13 +34,13 @@ namespace FestivalApp_PL.Auth
 
         public async Task Login(string email)
         {
-            await _jsRuntime.InvokeVoidAsync("localStorage.setItem", "userEmail", email);
+            await _jsRuntime.InvokeVoidAsync("sessionStorage.setItem", "userEmail", email);
             NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
         }
 
         public async Task Logout()
         {
-            await _jsRuntime.InvokeVoidAsync("localStorage.removeItem", "userEmail");
+            await _jsRuntime.InvokeVoidAsync("sessionStorage.removeItem", "userEmail");
             NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
         }
     }
