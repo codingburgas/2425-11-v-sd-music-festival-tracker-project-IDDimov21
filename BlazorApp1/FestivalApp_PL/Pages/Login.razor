@@ -1,46 +1,32 @@
 ﻿@page "/"
+@inject NavigationManager Navigation
 
 @code {
     private string email = "";
     private string password = "";
-    private string errorMessage = "";
 
     private void HandleLogin()
     {
-        if (email == "admin@gmail.com" && password == "pass")
-        {
-            Navigation.NavigateTo("/home");
-        }
-        else
-        {
-            errorMessage = "Invalid email or password.";
-        }
+        Navigation.NavigateTo("/home");
     }
 }
 
 <div class="auth-container">
     <div class="auth-box">
+        <div class="logo">⭐</div>
         <h2>Welcome back!</h2>
         <p>Please enter your details</p>
 
-        <EditForm OnValidSubmit="HandleLogin">
-            <div class="form-group">
-                <label>Email</label>
-                <InputText class="form-control" @bind="email" />
-            </div>
+        <div class="form-group">
+            <label>Email</label>
+            <input type="text" class="form-control" placeholder="you@example.com" @bind="email" />
+        </div>
 
-            <div class="form-group">
-                <label>Password</label>
-                <InputText class="form-control" type="password" @bind="password" />
-            </div>
+        <div class="form-group">
+            <label>Password</label>
+            <input type="password" class="form-control" placeholder="At least 8 characters" @bind="password" />
+        </div>
 
-            <p class="error-message">@errorMessage</p>
-
-            <div class="register-link">
-                <a href="/register">Don't have an account? Register now</a>
-            </div>
-
-            <button class="btn-login">Log in</button>
-        </EditForm>
+        <button class="btn-login" @onclick="HandleLogin">Log in</button>
     </div>
 </div>

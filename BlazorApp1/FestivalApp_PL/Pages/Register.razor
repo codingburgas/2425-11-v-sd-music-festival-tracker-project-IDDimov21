@@ -1,4 +1,5 @@
 ﻿@page "/register"
+@inject NavigationManager Navigation
 
 @code {
     private string name = "";
@@ -9,39 +10,36 @@
     private void HandleRegister()
     {
         Console.WriteLine("Registered successfully");
+        Navigation.NavigateTo("/");
     }
 }
 
 <div class="auth-container">
     <div class="auth-box">
-        <h2>Register</h2>
+        <div class="logo">⭐</div>
+        <h2>Create Account</h2>
+        <p>Fill in the details to register</p>
 
-        <EditForm OnValidSubmit="HandleRegister">
-            <div class="form-group">
-                <label>Name</label>
-                <InputText class="form-control" @bind="name" />
-            </div>
+        <div class="form-group">
+            <label>Name</label>
+            <input type="text" class="form-control" placeholder="Your name" @bind="name" />
+        </div>
 
-            <div class="form-group">
-                <label>Email</label>
-                <InputText class="form-control" @bind="email" />
-            </div>
+        <div class="form-group">
+            <label>Email</label>
+            <input type="text" class="form-control" placeholder="you@example.com" @bind="email" />
+        </div>
 
-            <div class="form-group">
-                <label>Password</label>
-                <InputText class="form-control" type="password" @bind="password" />
-            </div>
+        <div class="form-group">
+            <label>Password</label>
+            <input type="password" class="form-control" placeholder="At least 8 characters" @bind="password" />
+        </div>
 
-            <div class="form-group">
-                <InputCheckbox @bind="isArtist" />
-                <label>Artist</label>
-            </div>
+        <div class="form-group">
+            <input type="checkbox" @bind="isArtist" id="artistCheckbox" />
+            <label for="artistCheckbox">I am an artist</label>
+        </div>
 
-            <div class="register-link">
-                <a href="/">Already have an account? Login</a>
-            </div>
-
-            <button class="btn-login">Register</button>
-        </EditForm>
+        <button class="btn-login" @onclick="HandleRegister">Register</button>
     </div>
 </div>
