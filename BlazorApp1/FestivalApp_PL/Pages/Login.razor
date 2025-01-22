@@ -1,0 +1,46 @@
+﻿@page "/"
+
+@code {
+    private string email = "";
+    private string password = "";
+    private string errorMessage = "";
+
+    private void HandleLogin()
+    {
+        if (email == "admin@gmail.com" && password == "pass")
+        {
+            Navigation.NavigateTo("/home");
+        }
+        else
+        {
+            errorMessage = "Invalid email or password.";
+        }
+    }
+}
+
+<div class="auth-container">
+    <div class="auth-box">
+        <h2>Welcome back!</h2>
+        <p>Please enter your details</p>
+
+        <EditForm OnValidSubmit="HandleLogin">
+            <div class="form-group">
+                <label>Email</label>
+                <InputText class="form-control" @bind="email" />
+            </div>
+
+            <div class="form-group">
+                <label>Password</label>
+                <InputText class="form-control" type="password" @bind="password" />
+            </div>
+
+            <p class="error-message">@errorMessage</p>
+
+            <div class="register-link">
+                <a href="/register">Don't have an account? Register now</a>
+            </div>
+
+            <button class="btn-login">Log in</button>
+        </EditForm>
+    </div>
+</div>

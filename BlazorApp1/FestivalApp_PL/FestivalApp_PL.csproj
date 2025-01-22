@@ -11,4 +11,9 @@
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.6" PrivateAssets="all"/>
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\FestivalApp_BLL\FestivalApp_BLL.csproj" />
+      <ProjectReference Include="..\FestivalApp_DAL\FestivalApp_DAL.csproj" />
+    </ItemGroup>
+
 </Project>
