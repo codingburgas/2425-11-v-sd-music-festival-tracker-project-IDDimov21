@@ -1,4 +1,7 @@
 ﻿@page "/"
+@using Microsoft.AspNetCore.Components.Authorization
+@using FestivalApp_PL.Auth
+@inject AuthenticationStateProvider AuthStateProvider
 @inject NavigationManager Navigation
 
 @code {
@@ -6,7 +9,7 @@
     private string password = "";
     private string errorMessage = "";
 
-    private void HandleLogin()
+    private async Task HandleLogin()
     {
         if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
         {
@@ -16,7 +19,9 @@
 
         if (email == "admin@gmail.com" && password == "pass")
         {
-            Navigation.NavigateTo("/home");
+            await ((CustomAuthStateProvider)AuthStateProvider).Login(email);
+            await Task.Delay(500); // Ensure UI updates before navigating
+            Navigation.NavigateTo("/home", forceLoad: true);
         }
         else
         {

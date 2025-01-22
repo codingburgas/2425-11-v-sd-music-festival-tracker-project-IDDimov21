@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.JSInterop;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -6,28 +7,41 @@ namespace FestivalApp_PL.Auth
 {
     public class CustomAuthStateProvider : AuthenticationStateProvider
     {
-        private ClaimsPrincipal _currentUser = new ClaimsPrincipal(new ClaimsIdentity());
+        private readonly IJSRuntime _jsRuntime;
 
-        public override Task<AuthenticationState> GetAuthenticationStateAsync()
+        public CustomAuthStateProvider(IJSRuntime jsRuntime)
         {
-            return Task.FromResult(new AuthenticationState(_currentUser));
+            _jsRuntime = jsRuntime;
         }
 
-        public void Login(string email)
+        public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
-            var identity = new ClaimsIdentity(new[]
+            var email = await _jsRuntime.InvokeAsync<string>("localStorage.getItem", "userEmail");
+
+            ClaimsIdentity identity;
+            if (!string.IsNullOrEmpty(email))
             {
-                new Claim(ClaimTypes.Name, email)
-            }, "auth");
+                identity = new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, email) }, "auth");
+            }
+            else
+            {
+                identity = new ClaimsIdentity();
+            }
 
-            _currentUser = new ClaimsPrincipal(identity);
-            NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(_currentUser)));
+            var user = new ClaimsPrincipal(identity);
+            return new AuthenticationState(user);
         }
 
-        public void Logout()
+        public async Task Login(string email)
         {
-            _currentUser = new ClaimsPrincipal(new ClaimsIdentity());
-            NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(_currentUser)));
+            await _jsRuntime.InvokeVoidAsync("localStorage.setItem", "userEmail", email);
+            NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
+        }
+
+        public async Task Logout()
+        {
+            await _jsRuntime.InvokeVoidAsync("localStorage.removeItem", "userEmail");
+            NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
         }
     }
 }

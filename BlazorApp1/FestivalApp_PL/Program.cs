@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.JSInterop;
 using FestivalApp_PL;
 using FestivalApp_PL.Auth;
 using FestivalApp_BLL.Services;

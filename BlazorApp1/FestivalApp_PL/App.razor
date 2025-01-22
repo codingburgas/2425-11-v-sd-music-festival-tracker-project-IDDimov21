@@ -1,8 +1,12 @@
-﻿<Router AppAssembly="@typeof(App).Assembly">
-    <Found Context="routeContext">
-        <RouteView RouteData="@routeContext" />
-    </Found>
-    <NotFound>
-        <p>Sorry, there's nothing here.</p>
-    </NotFound>
-</Router>
+﻿<CascadingAuthenticationState>
+    <Router AppAssembly="@typeof(App).Assembly">
+        <Found Context="routeData">
+            <RouteView RouteData="@routeData" DefaultLayout="@typeof(FestivalApp_PL.Layout.MainLayout)" />
+        </Found>
+        <NotFound>
+            <LayoutView Layout="@typeof(FestivalApp_PL.Layout.MainLayout)">
+                <p>Sorry, there's nothing here.</p>
+            </LayoutView>
+        </NotFound>
+    </Router>
+</CascadingAuthenticationState>

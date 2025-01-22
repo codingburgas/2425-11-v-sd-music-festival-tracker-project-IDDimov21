@@ -1,7 +1,29 @@
-﻿<nav>
-    <ul>
-        <li><NavLink href="/home" Match="NavLinkMatch.All">Home</NavLink></li>
-        <li><NavLink href="/register">Register</NavLink></li>
-        <li><NavLink href="/">Login</NavLink></li>
-    </ul>
-</nav>
+﻿@using Microsoft.AspNetCore.Components.Authorization
+@using FestivalApp_PL.Auth
+@inject AuthenticationStateProvider AuthStateProvider
+@inject NavigationManager Navigation
+
+<CascadingAuthenticationState>
+    <AuthorizeView>
+        <Authorized>
+            <nav class="sidebar">
+                <div class="logo">LOGO NAME</div>
+                <ul>
+                    <li><NavLink href="/home">🏠 Home</NavLink></li>
+                    <li><NavLink href="/calendar">📅 My Calendar</NavLink></li>
+                    <li><NavLink href="/tickets">🎟️ Book Tickets</NavLink></li>
+                    <li><NavLink href="/settings">⚙️ Settings</NavLink></li>
+                    <li><button class="btn-logout" @onclick="HandleLogout">🚪 Logout</button></li>
+                </ul>
+            </nav>
+        </Authorized>
+    </AuthorizeView>
+</CascadingAuthenticationState>
+
+@code {
+    private async Task HandleLogout()
+    {
+        await ((CustomAuthStateProvider)AuthStateProvider).Logout();
+        Navigation.NavigateTo("/", forceLoad: true);
+    }
+}
