@@ -4,16 +4,29 @@
 @code {
     private string email = "";
     private string password = "";
+    private string errorMessage = "";
 
     private void HandleLogin()
     {
-        Navigation.NavigateTo("/home");
+        if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
+        {
+            errorMessage = "All fields are required.";
+            return;
+        }
+
+        if (email == "admin@gmail.com" && password == "pass")
+        {
+            Navigation.NavigateTo("/home");
+        }
+        else
+        {
+            errorMessage = "Invalid email or password.";
+        }
     }
 }
 
 <div class="auth-container">
     <div class="auth-box">
-        <div class="logo">⭐</div>
         <h2>Welcome back!</h2>
         <p>Please enter your details</p>
 
@@ -25,6 +38,12 @@
         <div class="form-group">
             <label>Password</label>
             <input type="password" class="form-control" placeholder="At least 8 characters" @bind="password" />
+        </div>
+
+        <p class="error-message">@errorMessage</p>
+
+        <div class="switch-link">
+            <a href="/register">Don't have an account? Register</a>
         </div>
 
         <button class="btn-login" @onclick="HandleLogin">Log in</button>

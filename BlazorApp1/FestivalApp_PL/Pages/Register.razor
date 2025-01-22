@@ -6,9 +6,16 @@
     private string email = "";
     private string password = "";
     private bool isArtist = false;
+    private string errorMessage = "";
 
     private void HandleRegister()
     {
+        if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
+        {
+            errorMessage = "All fields are required.";
+            return;
+        }
+
         Console.WriteLine("Registered successfully");
         Navigation.NavigateTo("/");
     }
@@ -16,7 +23,6 @@
 
 <div class="auth-container">
     <div class="auth-box">
-        <div class="logo">⭐</div>
         <h2>Create Account</h2>
         <p>Fill in the details to register</p>
 
@@ -38,6 +44,12 @@
         <div class="form-group">
             <input type="checkbox" @bind="isArtist" id="artistCheckbox" />
             <label for="artistCheckbox">I am an artist</label>
+        </div>
+
+        <p class="error-message">@errorMessage</p>
+
+        <div class="switch-link">
+            <a href="/">Already have an account? Login</a>
         </div>
 
         <button class="btn-login" @onclick="HandleRegister">Register</button>
