@@ -1,8 +1,33 @@
 ﻿@inherits LayoutComponentBase
+@using Microsoft.AspNetCore.Components.Authorization
+@inject AuthenticationStateProvider AuthStateProvider
+@inject NavigationManager Navigation
 
-<CascadingAuthenticationState>
+
+@code {
+    private bool hideSidebar = false;
+    private bool isAuthenticated = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        CheckCurrentPage();
+
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+        isAuthenticated = authState.User.Identity?.IsAuthenticated ?? false;
+    }
+
+    private void CheckCurrentPage()
+    {
+        string currentUrl = Navigation.Uri.ToLower();
+        hideSidebar = currentUrl.Contains("/login") || currentUrl.Contains("/register");
+    }
+}
+
+@if (!hideSidebar && isAuthenticated)
+{
     <NavMenu />
-    <div class="main-content">
-        @Body
-    </div>
-</CascadingAuthenticationState>
+}
+
+<div class="main-content">
+    @Body
+</div>

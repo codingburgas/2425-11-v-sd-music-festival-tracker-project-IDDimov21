@@ -8,6 +8,7 @@
     private string email = "";
     private string password = "";
     private string errorMessage = "";
+    private bool isLoggingIn = false;
 
     private async Task HandleLogin()
     {
@@ -17,15 +18,18 @@
             return;
         }
 
+        isLoggingIn = true;
+
         if (email == "admin@gmail.com" && password == "pass")
         {
             await ((CustomAuthStateProvider)AuthStateProvider).Login(email);
-            await Task.Delay(500); // Ensure UI updates before navigating
+            await Task.Delay(500); // Allow UI to update
             Navigation.NavigateTo("/home", forceLoad: true);
         }
         else
         {
             errorMessage = "Invalid email or password.";
+            isLoggingIn = false;
         }
     }
 }
@@ -51,6 +55,6 @@
             <a href="/register">Don't have an account? Register</a>
         </div>
 
-        <button class="btn-login" @onclick="HandleLogin">Log in</button>
+        <button class="btn-login" @onclick="HandleLogin" disabled="@isLoggingIn">Log in</button>
     </div>
 </div>
