@@ -7,14 +7,50 @@
     <AuthorizeView>
         <Authorized>
             <nav class="sidebar">
-                <div class="logo">LOGO NAME</div>
-                <ul>
-                    <li><NavLink href="/home">🏠 Home</NavLink></li>
-                    <li><NavLink href="/calendar">📅 My Calendar</NavLink></li>
-                    <li><NavLink href="/tickets">🎟️ Book Tickets</NavLink></li>
-                    <li><NavLink href="/settings">⚙️ Settings</NavLink></li>
-                    <li><button class="btn-logout" @onclick="HandleLogout">🚪 Logout</button></li>
+                <div class="logo-section">
+                    <div class="logo">LOGO</div>
+                    <span class="logo-name">LOGO NAME</span>
+                </div>
+
+                <div class="profile">
+                    <img src="icons/account.png" class="icon" />
+                    <span class="profile-name">David Kollins</span>
+                </div>
+
+                <ul class="nav-menu">
+                    <li>
+                        <NavLink class="nav-item" href="/dashboard">
+                            <img src="icons/dashboard-icon.png" class="icon" />
+                            <span class="text">Dashboard</span>
+                        </NavLink>
+                    </li>
+                    <li>
+                        <NavLink class="nav-item active" href="/calendar">
+                            <img src="icons/calendar-icon.png" class="icon" />
+                            <span class="text">My Calendar</span>
+                        </NavLink>
+                    </li>
+                    <li>
+                        <NavLink class="nav-item" href="/tickets">
+                            <img src="icons/book-tickets-icon.png" class="icon" />
+                            <span class="text">Book Tickets</span>
+                        </NavLink>
+                    </li>
                 </ul>
+                
+                <div class="settings">
+                    <NavLink class="nav-item" href="/settings">
+                        <img src="icons/settings-icon.png" class="icon" />
+                        <span class="text">Settings</span>
+                    </NavLink>
+                </div>
+                
+                <div class="logout">
+                    <button class="btn-logout" @onclick="HandleLogout">
+                        <img src="icons/logout-icons.png" class="icon" />
+                        <span class="text">Logout</span>
+                    </button>
+                </div>
             </nav>
         </Authorized>
     </AuthorizeView>
@@ -27,3 +63,4 @@
         Navigation.NavigateTo("/", forceLoad: true);
     }
 }
+    
