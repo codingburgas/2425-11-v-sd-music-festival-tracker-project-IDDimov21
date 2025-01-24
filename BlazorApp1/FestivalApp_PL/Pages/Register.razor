@@ -1,4 +1,6 @@
 ﻿@page "/register"
+@using FestivalApp_BLL.Services
+@inject IUserService UserService
 @inject NavigationManager Navigation
 
 @code {
@@ -8,17 +10,30 @@
     private bool isArtist = false;
     private string errorMessage = "";
 
-    private void HandleRegister()
+    private async Task HandleRegister()
     {
+        Console.WriteLine("Register Button Clicked!");
+
         if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
         {
             errorMessage = "All fields are required.";
             return;
         }
 
-        Console.WriteLine("Registered successfully");
-        Navigation.NavigateTo("/");
+        var success = await UserService.RegisterUser(name, email, password, isArtist);
+    
+        Console.WriteLine($"Registration Success: {success}");
+
+        if (success)
+        {
+            Navigation.NavigateTo("/");
+        }
+        else
+        {
+            errorMessage = "Email already exists.";
+        }
     }
+
 }
 
 <div class="auth-container">

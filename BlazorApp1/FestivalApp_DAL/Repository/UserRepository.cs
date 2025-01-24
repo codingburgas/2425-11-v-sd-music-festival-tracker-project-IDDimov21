@@ -14,15 +14,31 @@ namespace FestivalApp_DAL.Repository
             _context = context;
         }
 
-        public async Task<User> GetUserByEmailAsync(string email)
+        public async Task<Guest> GetGuestByEmailAsync(string email)
         {
-            return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+            return await _context.Guests.FirstOrDefaultAsync(g => g.Email == email);
         }
 
-        public async Task AddUserAsync(User user)
+        public async Task<Artist> GetArtistByEmailAsync(string email)
         {
-            await _context.Users.AddAsync(user);
-            await _context.SaveChangesAsync();
+            return await _context.Artists.FirstOrDefaultAsync(a => a.Email == email);
         }
+
+        public async Task AddGuestAsync(Guest guest)
+        {
+            Console.WriteLine($"Adding Guest: {guest.Email}");
+            _context.Guests.Add(guest);
+            await _context.SaveChangesAsync();
+            Console.WriteLine($"Guest {guest.Email} Registered Successfully!");
+        }
+
+        public async Task AddArtistAsync(Artist artist)
+        {
+            Console.WriteLine($"Adding Artist: {artist.Email}");
+            _context.Artists.Add(artist);
+            await _context.SaveChangesAsync();
+            Console.WriteLine($"Artist {artist.Email} Registered Successfully!");
+        }
+
     }
 }

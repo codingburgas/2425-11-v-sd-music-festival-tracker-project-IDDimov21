@@ -1,7 +1,5 @@
 ﻿@page "/"
-@using Microsoft.AspNetCore.Components.Authorization
-@using FestivalApp_PL.Auth
-@inject AuthenticationStateProvider AuthStateProvider
+@inject HttpClient Http
 @inject NavigationManager Navigation
 
 @code {
@@ -19,18 +17,19 @@
         }
 
         isLoggingIn = true;
+        
+        var response = await Http.PostAsJsonAsync("https://localhost:5001/api/auth/login", new { Email = email, Password = password });
 
-        if (email == "admin@gmail.com" && password == "pass")
+        if (response.IsSuccessStatusCode)
         {
-            await ((CustomAuthStateProvider)AuthStateProvider).Login(email);
-            await Task.Delay(500); // Allow UI to update
             Navigation.NavigateTo("/home", forceLoad: true);
         }
         else
         {
             errorMessage = "Invalid email or password.";
-            isLoggingIn = false;
         }
+
+        isLoggingIn = false;
     }
 }
 
