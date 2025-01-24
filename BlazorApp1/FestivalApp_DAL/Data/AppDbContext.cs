@@ -12,8 +12,14 @@ namespace FestivalApp_DAL.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Guest>().HasIndex(g => g.Email).IsUnique();
-            modelBuilder.Entity<Artist>().HasIndex(a => a.Email).IsUnique();
+            modelBuilder.Entity<Guest>()
+                .HasIndex(g => g.Email)
+                .IsUnique();
+
+            modelBuilder.Entity<Artist>()
+                .HasIndex(a => a.Email)
+                .IsUnique();
+
             base.OnModelCreating(modelBuilder);
         }
     }

@@ -17,13 +17,13 @@ namespace FestivalApp_API.Services
         public async Task<object> ValidateUser(string email, string password)
         {
             var guest = await _userRepository.GetGuestByEmailAsync(email);
-            if (guest != null && BCrypt.Net.BCrypt.Verify(password, guest.PasswordHash))
+            if (guest != null && BCrypt.Net.BCrypt.Verify(password, guest.Password))
             {
                 return guest;
             }
 
             var artist = await _userRepository.GetArtistByEmailAsync(email);
-            if (artist != null && BCrypt.Net.BCrypt.Verify(password, artist.PasswordHash))
+            if (artist != null && BCrypt.Net.BCrypt.Verify(password, artist.Password))
             {
                 return artist;
             }
@@ -42,7 +42,7 @@ namespace FestivalApp_API.Services
                 {
                     Name = name,
                     Email = email,
-                    PasswordHash = BCrypt.Net.BCrypt.HashPassword(password),
+                    Password = BCrypt.Net.BCrypt.HashPassword(password),
                     Rating = 0
                 };
 
@@ -57,7 +57,7 @@ namespace FestivalApp_API.Services
                 {
                     Name = name,
                     Email = email,
-                    PasswordHash = BCrypt.Net.BCrypt.HashPassword(password)
+                    Password = BCrypt.Net.BCrypt.HashPassword(password)
                 };
 
                 await _userRepository.AddGuestAsync(guest);

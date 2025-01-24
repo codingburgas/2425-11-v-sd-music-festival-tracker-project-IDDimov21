@@ -21,10 +21,9 @@ namespace FestivalApp_API.Controllers
         {
             var success = await _userService.RegisterUser(request.Name, request.Email, request.Password, request.IsArtist);
             if (!success)
-            {
                 return BadRequest("User already exists.");
-            }
-            return Ok("Registration successful");
+
+            return Ok("User registered successfully.");
         }
 
         [HttpPost("login")]
@@ -32,9 +31,8 @@ namespace FestivalApp_API.Controllers
         {
             var user = await _userService.ValidateUser(request.Email, request.Password);
             if (user == null)
-            {
                 return Unauthorized("Invalid email or password.");
-            }
+
             return Ok(user);
         }
     }

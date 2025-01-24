@@ -1,11 +1,23 @@
-﻿namespace FestivalApp_DAL.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace FestivalApp_DAL.Models
 {
     public class Artist
     {
+        [Key]
         public int Id { get; set; }
+
+        [Required]
+        [MaxLength(100)]
         public string Name { get; set; }
+
+        [Required]
+        [MaxLength(100)]
         public string Email { get; set; }
-        public string PasswordHash { get; set; }
-        public float Rating { get; set; } = 0; // Default Rating is 0
+
+        [Required]
+        public string Password { get; set; }  // 🔹 Change to Password if your DB column is Password
+
+        public double Rating { get; set; }
     }
 }
