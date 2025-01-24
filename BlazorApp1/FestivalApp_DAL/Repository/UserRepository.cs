@@ -26,19 +26,14 @@ namespace FestivalApp_DAL.Repository
 
         public async Task AddGuestAsync(Guest guest)
         {
-            Console.WriteLine($"Adding Guest: {guest.Email}");
-            _context.Guests.Add(guest);
+            await _context.Guests.AddAsync(guest);
             await _context.SaveChangesAsync();
-            Console.WriteLine($"Guest {guest.Email} Registered Successfully!");
         }
 
         public async Task AddArtistAsync(Artist artist)
         {
-            Console.WriteLine($"Adding Artist: {artist.Email}");
-            _context.Artists.Add(artist);
+            await _context.Artists.AddAsync(artist);
             await _context.SaveChangesAsync();
-            Console.WriteLine($"Artist {artist.Email} Registered Successfully!");
         }
-
     }
 }

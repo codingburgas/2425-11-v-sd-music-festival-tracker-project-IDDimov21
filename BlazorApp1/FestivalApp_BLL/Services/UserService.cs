@@ -3,7 +3,7 @@ using FestivalApp_DAL.Repository;
 using System.Threading.Tasks;
 using BCrypt.Net;
 
-namespace FestivalApp_BLL.Services
+namespace FestivalApp_API.Services
 {
     public class UserService : IUserService
     {
@@ -14,26 +14,16 @@ namespace FestivalApp_BLL.Services
             _userRepository = userRepository;
         }
 
-        public string HashPassword(string password)
-        {
-            return BCrypt.Net.BCrypt.HashPassword(password);
-        }
-
-        public bool VerifyPassword(string password, string hash)
-        {
-            return BCrypt.Net.BCrypt.Verify(password, hash);
-        }
-
         public async Task<object> ValidateUser(string email, string password)
         {
             var guest = await _userRepository.GetGuestByEmailAsync(email);
-            if (guest != null && VerifyPassword(password, guest.PasswordHash))
+            if (guest != null && BCrypt.Net.BCrypt.Verify(password, guest.Password)) // Changed from PasswordHash
             {
                 return guest;
             }
 
             var artist = await _userRepository.GetArtistByEmailAsync(email);
-            if (artist != null && VerifyPassword(password, artist.PasswordHash))
+            if (artist != null && BCrypt.Net.BCrypt.Verify(password, artist.Password)) // Changed from PasswordHash
             {
                 return artist;
             }
@@ -53,7 +43,7 @@ namespace FestivalApp_BLL.Services
                 {
                     Name = name,
                     Email = email,
-                    PasswordHash = HashPassword(password),
+                    Password = BCrypt.Net.BCrypt.HashPassword(password), // Changed from PasswordHash
                     Rating = 0
                 };
 
@@ -69,7 +59,7 @@ namespace FestivalApp_BLL.Services
                 {
                     Name = name,
                     Email = email,
-                    PasswordHash = HashPassword(password)
+                    Password = BCrypt.Net.BCrypt.HashPassword(password), // Changed from PasswordHash
                 };
 
                 await _userRepository.AddGuestAsync(guest);
