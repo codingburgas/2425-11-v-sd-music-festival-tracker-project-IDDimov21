@@ -19,6 +19,10 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ServiceReference Include="https://localhost:5001/api/auth" />
+    </ItemGroup>
+
+    <ItemGroup>
       <Folder Include="wwwroot\icons\" />
     </ItemGroup>
 

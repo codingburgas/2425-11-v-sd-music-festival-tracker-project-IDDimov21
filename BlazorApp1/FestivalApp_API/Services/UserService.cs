@@ -3,7 +3,7 @@ using FestivalApp_DAL.Repository;
 using System.Threading.Tasks;
 using BCrypt.Net;
 
-namespace FestivalApp_BLL.Services
+namespace FestivalApp_API.Services
 {
     public class UserService : IUserService
     {
@@ -14,26 +14,16 @@ namespace FestivalApp_BLL.Services
             _userRepository = userRepository;
         }
 
-        public string HashPassword(string password)
-        {
-            return BCrypt.Net.BCrypt.HashPassword(password);
-        }
-
-        public bool VerifyPassword(string password, string hash)
-        {
-            return BCrypt.Net.BCrypt.Verify(password, hash);
-        }
-
         public async Task<object> ValidateUser(string email, string password)
         {
             var guest = await _userRepository.GetGuestByEmailAsync(email);
-            if (guest != null && VerifyPassword(password, guest.PasswordHash))
+            if (guest != null && BCrypt.Net.BCrypt.Verify(password, guest.PasswordHash))
             {
                 return guest;
             }
 
             var artist = await _userRepository.GetArtistByEmailAsync(email);
-            if (artist != null && VerifyPassword(password, artist.PasswordHash))
+            if (artist != null && BCrypt.Net.BCrypt.Verify(password, artist.PasswordHash))
             {
                 return artist;
             }
@@ -46,14 +36,13 @@ namespace FestivalApp_BLL.Services
             if (isArtist)
             {
                 var existingArtist = await _userRepository.GetArtistByEmailAsync(email);
-                if (existingArtist != null)
-                    return false;
+                if (existingArtist != null) return false;
 
                 var artist = new Artist
                 {
                     Name = name,
                     Email = email,
-                    PasswordHash = HashPassword(password),
+                    PasswordHash = BCrypt.Net.BCrypt.HashPassword(password),
                     Rating = 0
                 };
 
@@ -62,14 +51,13 @@ namespace FestivalApp_BLL.Services
             else
             {
                 var existingGuest = await _userRepository.GetGuestByEmailAsync(email);
-                if (existingGuest != null)
-                    return false;
+                if (existingGuest != null) return false;
 
                 var guest = new Guest
                 {
                     Name = name,
                     Email = email,
-                    PasswordHash = HashPassword(password)
+                    PasswordHash = BCrypt.Net.BCrypt.HashPassword(password)
                 };
 
                 await _userRepository.AddGuestAsync(guest);

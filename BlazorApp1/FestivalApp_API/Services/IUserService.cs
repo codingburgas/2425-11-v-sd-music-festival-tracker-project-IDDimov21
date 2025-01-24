@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace FestivalApp_BLL.Services
+namespace FestivalApp_API.Services
 {
     public interface IUserService
     {
