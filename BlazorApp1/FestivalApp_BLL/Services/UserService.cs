@@ -3,7 +3,7 @@ using FestivalApp_DAL.Repository;
 using System.Threading.Tasks;
 using BCrypt.Net;
 
-namespace FestivalApp_API.Services
+namespace FestivalApp_BLL.Services   // ✅ Ensure this matches `IUserService`
 {
     public class UserService : IUserService
     {
@@ -17,13 +17,13 @@ namespace FestivalApp_API.Services
         public async Task<object> ValidateUser(string email, string password)
         {
             var guest = await _userRepository.GetGuestByEmailAsync(email);
-            if (guest != null && BCrypt.Net.BCrypt.Verify(password, guest.Password)) // Changed from PasswordHash
+            if (guest != null && BCrypt.Net.BCrypt.Verify(password, guest.Password))
             {
                 return guest;
             }
 
             var artist = await _userRepository.GetArtistByEmailAsync(email);
-            if (artist != null && BCrypt.Net.BCrypt.Verify(password, artist.Password)) // Changed from PasswordHash
+            if (artist != null && BCrypt.Net.BCrypt.Verify(password, artist.Password))
             {
                 return artist;
             }
@@ -36,14 +36,13 @@ namespace FestivalApp_API.Services
             if (isArtist)
             {
                 var existingArtist = await _userRepository.GetArtistByEmailAsync(email);
-                if (existingArtist != null)
-                    return false;
+                if (existingArtist != null) return false;
 
                 var artist = new Artist
                 {
                     Name = name,
                     Email = email,
-                    Password = BCrypt.Net.BCrypt.HashPassword(password), // Changed from PasswordHash
+                    Password = BCrypt.Net.BCrypt.HashPassword(password),
                     Rating = 0
                 };
 
@@ -52,14 +51,13 @@ namespace FestivalApp_API.Services
             else
             {
                 var existingGuest = await _userRepository.GetGuestByEmailAsync(email);
-                if (existingGuest != null)
-                    return false;
+                if (existingGuest != null) return false;
 
                 var guest = new Guest
                 {
                     Name = name,
                     Email = email,
-                    Password = BCrypt.Net.BCrypt.HashPassword(password), // Changed from PasswordHash
+                    Password = BCrypt.Net.BCrypt.HashPassword(password)
                 };
 
                 await _userRepository.AddGuestAsync(guest);
@@ -69,3 +67,4 @@ namespace FestivalApp_API.Services
         }
     }
 }
+    

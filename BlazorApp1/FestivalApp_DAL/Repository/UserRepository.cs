@@ -16,12 +16,12 @@ namespace FestivalApp_DAL.Repository
 
         public async Task<Guest> GetGuestByEmailAsync(string email)
         {
-            return await _context.Guests.FirstOrDefaultAsync(g => g.Email == email);
+            return await _context.Guests.FirstOrDefaultAsync(g => g.Email.ToLower() == email.ToLower());
         }
 
         public async Task<Artist> GetArtistByEmailAsync(string email)
         {
-            return await _context.Artists.FirstOrDefaultAsync(a => a.Email == email);
+            return await _context.Artists.FirstOrDefaultAsync(a => a.Email.ToLower() == email.ToLower());
         }
 
         public async Task AddGuestAsync(Guest guest)

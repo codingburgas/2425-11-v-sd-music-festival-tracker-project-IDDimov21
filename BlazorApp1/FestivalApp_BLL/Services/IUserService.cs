@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace FestivalApp_BLL.Services
+namespace FestivalApp_BLL.Services   // ✅ Ensure this matches the BLL namespace
 {
     public interface IUserService
     {
