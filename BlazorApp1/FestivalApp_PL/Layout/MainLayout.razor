@@ -3,7 +3,6 @@
 @inject AuthenticationStateProvider AuthStateProvider
 @inject NavigationManager Navigation
 
-
 @code {
     private bool hideSidebar = false;
     private bool isAuthenticated = false;
@@ -11,9 +10,14 @@
     protected override async Task OnInitializedAsync()
     {
         CheckCurrentPage();
+        await UpdateAuthState();
+    }
 
+    private async Task UpdateAuthState()
+    {
         var authState = await AuthStateProvider.GetAuthenticationStateAsync();
         isAuthenticated = authState.User.Identity?.IsAuthenticated ?? false;
+        StateHasChanged(); // 🔥 Forces UI Update
     }
 
     private void CheckCurrentPage()

@@ -1,7 +1,8 @@
 ﻿@page "/register"
-@using FestivalApp_BLL.Services
-@inject IUserService UserService
+@using System.Net.Http.Json  @* ✅ Add this if missing *@
+@inject HttpClient Http
 @inject NavigationManager Navigation
+
 
 @code {
     private string name = "";
@@ -9,31 +10,39 @@
     private string password = "";
     private bool isArtist = false;
     private string errorMessage = "";
+    private bool isRegistering = false;
 
     private async Task HandleRegister()
     {
-        Console.WriteLine("Register Button Clicked!");
-
         if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
         {
             errorMessage = "All fields are required.";
             return;
         }
 
-        var success = await UserService.RegisterUser(name, email, password, isArtist);
-    
-        Console.WriteLine($"Registration Success: {success}");
+        isRegistering = true;
 
-        if (success)
+        try
         {
-            Navigation.NavigateTo("/");
+            var response = await Http.PostAsJsonAsync("http://localhost:5148/api/auth/register", 
+                new { Name = name, Email = email, Password = password, IsArtist = isArtist });
+
+            if (response.IsSuccessStatusCode)
+            {
+                Navigation.NavigateTo("/");
+            }
+            else
+            {
+                errorMessage = "Email already exists.";
+            }
         }
-        else
+        catch (HttpRequestException)
         {
-            errorMessage = "Email already exists.";
+            errorMessage = "Error connecting to server.";
         }
+
+        isRegistering = false;
     }
-
 }
 
 <div class="auth-container">
@@ -67,6 +76,6 @@
             <a href="/">Already have an account? Login</a>
         </div>
 
-        <button class="btn-login" @onclick="HandleRegister">Register</button>
+        <button class="btn-login" @onclick="HandleRegister" disabled="@isRegistering">Register</button>
     </div>
 </div>

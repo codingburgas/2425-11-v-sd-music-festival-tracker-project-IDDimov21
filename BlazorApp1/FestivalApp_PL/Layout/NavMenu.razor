@@ -14,7 +14,7 @@
 
                 <div class="profile">
                     <img src="icons/account.png" class="icon" />
-                    <span class="profile-name">David Kollins</span>
+                    <span class="profile-name">@UserDisplayName</span>
                 </div>
 
                 <ul class="nav-menu">
@@ -57,10 +57,22 @@
 </CascadingAuthenticationState>
 
 @code {
+    private string UserDisplayName = "User";
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity.IsAuthenticated)
+        {
+            UserDisplayName = user.Identity.Name ?? "User";
+        }
+    }
+
     private async Task HandleLogout()
     {
         await ((CustomAuthStateProvider)AuthStateProvider).Logout();
         Navigation.NavigateTo("/", forceLoad: true);
     }
 }
-    

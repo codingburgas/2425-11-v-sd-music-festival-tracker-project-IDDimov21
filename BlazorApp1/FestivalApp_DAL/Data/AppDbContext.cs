@@ -10,6 +10,14 @@ namespace FestivalApp_DAL.Data
         public DbSet<Guest> Guests { get; set; }
         public DbSet<Artist> Artists { get; set; }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseSqlite("Data Source=festivalapp.db");
+            }
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Guest>()
