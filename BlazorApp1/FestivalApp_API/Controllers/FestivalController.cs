@@ -19,28 +19,45 @@ namespace FestivalApp_API.Controllers
         }
 
         [HttpGet]
+        [HttpGet]
         public async Task<IActionResult> GetFestivals()
         {
             var festivals = await _context.Festivals.ToListAsync();
+
+            foreach (var festival in festivals)
+            {
+                // ✅ Convert time string to TimeOnly for correct API response
+                if (TimeOnly.TryParse(festival.Time, out var parsedTime))
+                {
+                    festival.Time = parsedTime.ToString("HH:mm"); // Format as "18:00"
+                }
+            }
+
             return Ok(festivals);
         }
-
         [HttpPost]
         public async Task<IActionResult> CreateFestival([FromBody] Festival festival)
         {
-            if (festival == null || string.IsNullOrWhiteSpace(festival.FestivalName))
+            if (string.IsNullOrWhiteSpace(festival.FestivalName) || string.IsNullOrWhiteSpace(festival.Time))
+            {
                 return BadRequest("Invalid festival data.");
+            }
 
-            try
+            // ✅ Convert string to TimeOnly safely
+            if (!TimeOnly.TryParseExact(festival.Time, "HH:mm", out var parsedTime))
             {
-                _context.Festivals.Add(festival);
-                await _context.SaveChangesAsync();
-                return Ok(festival);
+                return BadRequest("Invalid time format. Use 'HH:mm'.");
             }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Internal server error: {ex.Message}");
-            }
+
+            festival.Time = parsedTime.ToString("HH:mm"); // Store as string in DB
+
+            _context.Festivals.Add(festival);
+            await _context.SaveChangesAsync();
+
+            return Ok(festival);
         }
+
+
+
     }
 }

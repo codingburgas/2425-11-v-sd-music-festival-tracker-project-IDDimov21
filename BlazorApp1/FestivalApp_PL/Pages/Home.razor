@@ -9,10 +9,10 @@
 
 @code {
     private bool isAuthenticated = false;
-    private bool isArtist = false;
     private string userDisplayName = "User";
     private List<Festival> festivals = new();
     private bool showCreateFestivalModal = false;
+    private Festival newFestival = new();
 
     protected override async Task OnInitializedAsync()
     {
@@ -24,7 +24,6 @@
         if (isAuthenticated)
         {
             userDisplayName = user.Identity?.Name ?? "User";
-            isArtist = user.IsInRole("Artist");
         }
 
         await LoadFestivals();
@@ -45,6 +44,37 @@
     private void Logout()
     {
         Navigation.NavigateTo("/", forceLoad: true);
+    }
+
+    private async Task CreateFestival()
+    {
+        if (string.IsNullOrWhiteSpace(newFestival.FestivalName) || 
+            newFestival.Date == default || 
+            newFestival.Time == null)
+        {
+            Console.WriteLine("All fields are required.");
+            return;
+        }
+
+
+        try
+        {
+            var response = await Http.PostAsJsonAsync("http://localhost:5148/api/festivals", newFestival);
+            if (response.IsSuccessStatusCode)
+            {
+                newFestival = new Festival(); // Reset form
+                showCreateFestivalModal = false;
+                await LoadFestivals(); // Refresh the list
+            }
+            else
+            {
+                Console.WriteLine("Error creating festival.");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+        }
     }
 }
 
@@ -83,13 +113,11 @@
     </div>
 
     <div class="main-content">
-        <h1 id = "festTitle">Festival List</h1>
+        <h1 id="festTitle">Festival List</h1>
 
-        @if (isArtist)
-        {
-            <button class="btn-create-fest" @onclick="() => showCreateFestivalModal = true">Create Fest</button>
-        }
-
+        <button class="btn-create-fest" @onclick="() => showCreateFestivalModal = true">
+            Create Fest
+        </button>
         <div class="festival-list">
             @if (festivals.Count == 0)
             {
@@ -101,7 +129,7 @@
                 {
                     <div class="festival-card">
                         <h3>@festival.FestivalName</h3>
-                        <p>@festival.Date | @festival.Time</p>
+                        <p>@festival.Date.ToString("yyyy-MM-dd") | @festival.Time</p>
                         <button class="btn-buy-tickets">Buy Tickets</button>
                     </div>
                 }
@@ -109,3 +137,33 @@
         </div>
     </div>
 </div>
+
+@if (showCreateFestivalModal)
+{
+    <div class="modal-overlay">
+        <div class="modal">
+            <h2>Create Festival</h2>
+            <div class="form-group">
+                <label>Festival Name</label>
+                <input type="text" class="form-control" @bind="newFestival.FestivalName" />
+            </div>
+            <div class="form-group">
+                <label>Date</label>
+                <input type="date" class="form-control" @bind="newFestival.Date" />
+            </div>
+            <div class="form-group">
+                <label>Time</label>
+                <input type="text" class="form-control" @bind="newFestival.Time" placeholder="HH:mm" />
+            </div>
+            <div class="form-group">
+                <label>Ticket Cost ($)</label>
+                <input type="number" class="form-control" @bind="newFestival.TicketCost" />
+            </div>
+
+            <div class="modal-actions">
+                <button class="btn-submit" @onclick="CreateFestival">Create</button>
+                <button class="btn-close" @onclick="() => showCreateFestivalModal = false">Cancel</button>
+            </div>
+        </div>
+    </div>
+}
