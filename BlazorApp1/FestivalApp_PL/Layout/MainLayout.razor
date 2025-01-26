@@ -4,32 +4,13 @@
 @inject NavigationManager Navigation
 
 @code {
-    private bool hideSidebar = false;
     private bool isAuthenticated = false;
 
     protected override async Task OnInitializedAsync()
     {
-        CheckCurrentPage();
-        await UpdateAuthState();
-    }
-
-    private async Task UpdateAuthState()
-    {
         var authState = await AuthStateProvider.GetAuthenticationStateAsync();
         isAuthenticated = authState.User.Identity?.IsAuthenticated ?? false;
-        StateHasChanged(); // 🔥 Forces UI Update
     }
-
-    private void CheckCurrentPage()
-    {
-        string currentUrl = Navigation.Uri.ToLower();
-        hideSidebar = currentUrl.Contains("/login") || currentUrl.Contains("/register");
-    }
-}
-
-@if (!hideSidebar && isAuthenticated)
-{
-    <NavMenu />
 }
 
 <div class="main-content">

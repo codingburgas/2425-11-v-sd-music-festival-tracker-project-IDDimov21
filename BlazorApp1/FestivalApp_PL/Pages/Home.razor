@@ -1,8 +1,71 @@
 ﻿@page "/home"
+@using Microsoft.AspNetCore.Components.Authorization
+@using FestivalApp_PL.Auth
+@inject AuthenticationStateProvider AuthStateProvider
+@inject NavigationManager Navigation
 
-<h1>Music Festivals</h1>
-<h2>January</h2>
+@code {
+    private bool isAuthenticated = false;
+    private string UserDisplayName = "User";
 
-<div class="calendar-container">
-    <p>Calendar will be added later.</p>
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        isAuthenticated = user.Identity?.IsAuthenticated ?? false;
+
+        if (isAuthenticated)
+        {
+            UserDisplayName = user.Identity?.Name ?? "User";
+            StateHasChanged(); // 🔥 Forces UI Update
+        }
+    }
+
+    private async Task HandleLogout()
+    {
+        await ((CustomAuthStateProvider)AuthStateProvider).Logout();
+        Navigation.NavigateTo("/", forceLoad: true);
+    }
+}
+
+<nav class="sidebar">
+    <div class="logo-section">
+        <span class="logo-name">Music Festival System</span>
+    </div>
+
+    <div class="profile">
+        <img src="icons/account.png" class="icon" />
+        <span class="profile-name">@UserDisplayName</span>  <!-- ✅ This should now update correctly -->
+    </div>
+
+    <ul class="nav-menu">
+        <li>
+            <NavLink class="nav-item" href="/dashboard">
+                <img src="icons/dashboard-icon.png" class="icon" />
+                <span class="text">Dashboard</span>
+            </NavLink>
+        </li>
+        <li>
+            <NavLink class="nav-item active" href="/home">
+                <img src="icons/calendar-icon.png" class="icon" />
+                <span class="text">Festival List</span>
+            </NavLink>
+        </li>
+    </ul>
+    
+    <div class="logout">
+        <button class="btn-logout" @onclick="HandleLogout">
+            <img src="icons/logout-icons.png" class="icon" />
+            <span class="text">Logout</span>
+        </button>
+    </div>
+</nav>
+
+<div class="main-content">
+    <h1>Music Festivals</h1>
+    <h2>January</h2>
+    <div class="calendar-container">
+        <p>Calendar will be added later.</p>
+    </div>
 </div>

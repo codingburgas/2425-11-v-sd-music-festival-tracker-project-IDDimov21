@@ -26,14 +26,16 @@
 
         try
         {
-            var response = await Http.PostAsJsonAsync("http://localhost:5148/api/auth/login", 
-                new { Email = email, Password = password });
+            var response = await Http.PostAsJsonAsync("http://localhost:5148/api/auth/login", new { Email = email, Password = password });
 
             if (response.IsSuccessStatusCode)
             {
                 var user = await response.Content.ReadFromJsonAsync<UserResponse>();
-                await ((CustomAuthStateProvider)AuthStateProvider).Login(user.Email, user.Name);
-                Navigation.NavigateTo("/home", forceLoad: true);
+                if (user != null)
+                {
+                    await ((CustomAuthStateProvider)AuthStateProvider).Login(user.Email, user.Name);
+                    Navigation.NavigateTo("/home", forceLoad: true);
+                }
             }
             else
             {

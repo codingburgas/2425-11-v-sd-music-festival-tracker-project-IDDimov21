@@ -202,13 +202,3 @@ body {
 .btn-logout:hover {
     background-color: red;
     border-radius: 10px;
-}
-
-/* Settings */
-.settings {
-    border-top: 1px solid white;
-}
-
-.settings .nav-item {
-    padding: 10px;
-}
