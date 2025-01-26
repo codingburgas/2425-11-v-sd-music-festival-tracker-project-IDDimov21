@@ -16,8 +16,12 @@ namespace FestivalApp_DAL.Models
         public string Email { get; set; }
 
         [Required]
-        public string Password { get; set; }  // 🔹 Change to Password if your DB column is Password
+        public string Password { get; set; }
 
         public double Rating { get; set; }
+
+        [Required]
+        [MaxLength(10)]
+        public string Role { get; set; } = "Artist"; // ✅ Add Role Property
     }
 }

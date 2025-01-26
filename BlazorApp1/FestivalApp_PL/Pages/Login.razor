@@ -33,7 +33,7 @@
                 var user = await response.Content.ReadFromJsonAsync<UserResponse>();
                 if (user != null)
                 {
-                    await ((CustomAuthStateProvider)AuthStateProvider).Login(user.Email, user.Name);
+                    await ((CustomAuthStateProvider)AuthStateProvider).Login(user.Email, user.Name, user.Role);
                     Navigation.NavigateTo("/home", forceLoad: true);
                 }
             }

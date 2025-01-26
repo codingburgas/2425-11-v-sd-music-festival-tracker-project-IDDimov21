@@ -15,10 +15,12 @@ namespace FestivalApp_DAL.Models
         public int ArtistId { get; set; } // Foreign Key to Artist
 
         [Required]
-        public DateTime Date { get; set; }  // Store as text in SQLite
+        [DataType(DataType.Date)]
+        public string Date { get; set; } // Keep as string for JSON handling
 
         [Required]
-        public string Time { get; set; }  // Store as "HH:mm"
+        [DataType(DataType.Time)]
+        public string Time { get; set; } // Keep as string for JSON handling
 
         [Required]
         public double TicketCost { get; set; }

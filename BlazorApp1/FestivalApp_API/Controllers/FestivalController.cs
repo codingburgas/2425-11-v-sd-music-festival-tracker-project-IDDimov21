@@ -1,9 +1,9 @@
-﻿using FestivalApp_DAL.Data;
-using FestivalApp_DAL.Models;
+﻿using FestivalApp_DAL.Models;
+using FestivalApp_DAL.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Linq;
 
 namespace FestivalApp_API.Controllers
 {
@@ -31,14 +31,16 @@ namespace FestivalApp_API.Controllers
             if (festival == null || string.IsNullOrWhiteSpace(festival.FestivalName))
                 return BadRequest("Invalid festival data.");
 
-            var artistExists = await _context.Artists.AnyAsync(a => a.Id == festival.ArtistId);
-            if (!artistExists)
-                return BadRequest("Artist ID does not exist.");
-
-            _context.Festivals.Add(festival);
-            await _context.SaveChangesAsync();
-
-            return Ok(festival);
+            try
+            {
+                _context.Festivals.Add(festival);
+                await _context.SaveChangesAsync();
+                return Ok(festival);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
     }
 }

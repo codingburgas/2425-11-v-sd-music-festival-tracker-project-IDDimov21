@@ -7,12 +7,14 @@ body {
 }
 
 /* Centering Auth Pages */
+/* ✅ Fix Login Page Centering */
 .auth-container {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     background: #EAE7E7;
+    overflow: hidden; /* Prevent scrolling */
 }
 
 .auth-box {
@@ -22,7 +24,9 @@ body {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     text-align: center;
     width: 350px;
+    position: relative;
 }
+
 
 /* Form Group */    
 .form-group {
@@ -205,22 +209,30 @@ body {
 }
 
 /* ✅ Festival List Styling */
-.main-content {
+
+#festTitle{
+    text-align: right;
+    margin-right: 16.5%;
+}
+
+.festival-main-content {
     padding: 20px;
     color: black;
-    margin-top:1.5%;
+    margin-top: 1.5%;
+    margin-left: 260px; /* ✅ Shifted right to avoid sidebar */
+}
 
+.festival-main-content h1 {
+    text-align: right;
+    margin-right: 8.5%;
 }
-.main-content h1 {
-    text-align: center;
-    margin-left: 70%;
-}
+
 .festival-list {
     display: flex;
     flex-direction: column;
     width: 30%;
     margin-top: 2.5%;
-    margin-left: 70%;
+    margin-left: 65%;
     gap: 15px;
     max-height: 700px; /* Make it scrollable */
     overflow-y: auto;
@@ -236,10 +248,11 @@ body {
     justify-content: space-between;
     align-items: center;
 }
-.festival-card:hover{
-    
+
+.festival-card:hover {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
+
 .festival-card h3 {
     margin: 0;
     font-size: 18px;
@@ -273,6 +286,7 @@ body {
     border-radius: 5px;
     cursor: pointer;
     margin-bottom: 15px;
+    margin-left: 260px; /* ✅ Shifted right to avoid sidebar */
 }
 
 .btn-create-fest:hover {

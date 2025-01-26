@@ -3,7 +3,7 @@ using FestivalApp_DAL.Repository;
 using System.Threading.Tasks;
 using BCrypt.Net;
 
-namespace FestivalApp_BLL.Services   // ✅ Ensure this matches `IUserService`
+namespace FestivalApp_BLL.Services
 {
     public class UserService : IUserService
     {
@@ -18,15 +18,11 @@ namespace FestivalApp_BLL.Services   // ✅ Ensure this matches `IUserService`
         {
             var guest = await _userRepository.GetGuestByEmailAsync(email);
             if (guest != null && BCrypt.Net.BCrypt.Verify(password, guest.Password))
-            {
                 return guest;
-            }
 
             var artist = await _userRepository.GetArtistByEmailAsync(email);
             if (artist != null && BCrypt.Net.BCrypt.Verify(password, artist.Password))
-            {
                 return artist;
-            }
 
             return null;
         }
@@ -43,7 +39,8 @@ namespace FestivalApp_BLL.Services   // ✅ Ensure this matches `IUserService`
                     Name = name,
                     Email = email,
                     Password = BCrypt.Net.BCrypt.HashPassword(password),
-                    Rating = 0
+                    Rating = 0,
+                    Role = "Artist"
                 };
 
                 await _userRepository.AddArtistAsync(artist);
@@ -57,7 +54,8 @@ namespace FestivalApp_BLL.Services   // ✅ Ensure this matches `IUserService`
                 {
                     Name = name,
                     Email = email,
-                    Password = BCrypt.Net.BCrypt.HashPassword(password)
+                    Password = BCrypt.Net.BCrypt.HashPassword(password),
+                    Role = "Guest"
                 };
 
                 await _userRepository.AddGuestAsync(guest);
@@ -67,4 +65,3 @@ namespace FestivalApp_BLL.Services   // ✅ Ensure this matches `IUserService`
         }
     }
 }
-    
