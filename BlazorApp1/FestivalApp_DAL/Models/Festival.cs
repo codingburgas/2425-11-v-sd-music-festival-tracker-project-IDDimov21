@@ -7,19 +7,19 @@ namespace FestivalApp_DAL.Models
     {
         [Key]
         public int Id { get; set; }
-        
-        [Required]
-        public int ArtistId { get; set; } // Foreign Key to Artist
-        
+
         [Required]
         public string FestivalName { get; set; }
-        
+
         [Required]
-        public DateTime Date { get; set; }
-        
+        public int ArtistId { get; set; } // Foreign Key to Artist
+
         [Required]
-        public string Time { get; set; }
-        
+        public DateTime Date { get; set; }  // Store as text in SQLite
+
+        [Required]
+        public string Time { get; set; }  // Store as "HH:mm"
+
         [Required]
         public double TicketCost { get; set; }
     }

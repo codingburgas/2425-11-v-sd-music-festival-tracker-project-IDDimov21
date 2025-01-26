@@ -202,3 +202,79 @@ body {
 .btn-logout:hover {
     background-color: red;
     border-radius: 10px;
+}
+
+/* ✅ Festival List Styling */
+.main-content {
+    padding: 20px;
+    color: black;
+    margin-top:1.5%;
+
+}
+.main-content h1 {
+    text-align: center;
+    margin-left: 70%;
+}
+.festival-list {
+    display: flex;
+    flex-direction: column;
+    width: 30%;
+    margin-top: 2.5%;
+    margin-left: 70%;
+    gap: 15px;
+    max-height: 700px; /* Make it scrollable */
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+.festival-card {
+    background: #f4f4f4;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.festival-card:hover{
+    
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+.festival-card h3 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.festival-card p {
+    font-size: 14px;
+    color: #666;
+    text-align: center;
+}
+
+.btn-buy-tickets {
+    background: #333;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-buy-tickets:hover {
+    background: black;
+}
+
+/* ✅ Create Festival Button */
+.btn-create-fest {
+    background: black;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 15px;
+}
+
+.btn-create-fest:hover {
+    background: gray;
+}
